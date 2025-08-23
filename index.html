@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PromptFi → Decentralized Prompt Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" href="assets/img/favicon.png" type="image/png"/>
+<script src="https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js" defer></script>
+</head>
+<body>
+<noscript><style>#pageLoader{display:none}</style></noscript>
+<div id="pageLoader" class="page-loader" aria-hidden="true">
+  <div class="spinner"></div>
+</div>
+  <nav>
+    <div class="container navbar">
+      <a href="#" class="brand">PromptFi</a>
+      <div class="nav-actions">
+        <div class="dropdown-container" style="position: relative;">
+          <button id="menu-trigger" class="btn" aria-expanded="false" aria-haspopup="true">
+            Menu ▾
+          </button>
+          <div id="menu-dropdown" class="menu" style="display: none; position: absolute; top: calc(100% + 6px); right: 0; min-width: 160px; z-index: 1200;">
+            <a href="#explore">Explore</a>
+            <a href="#creators">Creators</a>
+            <a href="#purchases">My Purchases</a>
+          </div>
+        </div>
+        <button id="walletBtn" class="btn glow" style="padding: 12px 18px; border-radius: 14px;">Connect Wallet</button>
+      </div>
+    </div>
+  </nav>
+
+  <div id="main-content">
+    <section id="home" class="hero" style="display: block;">
+      <div class="hero-bg"></div>
+      <div class="container" style="padding:48px 0">
+        <div class="grid grid-2">
+          <div>
+            <span class="badge">Crypto-native prompt marketplace</span>
+            <h1>Turn Your AI Prompts Into Crypto Assets</h1>
+            <p class="muted">Buy high-quality prompts with SOL. Unlock instantly after confirmed payment.</p>
+            <div style="display:flex;gap:12px;margin-top:16px">
+              <a href="#explore" class="btn glow">Explore Prompts</a>
+              <a href="#how" class="btn">How it works</a>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <img src="assets/img/banner-witdesc.jpg" alt="Hero artwork for PromptFi" style="width: 100%; height: 100%; object-fit: cover; border-radius: 22px; border: 1px solid var(--b);">
+          </div>
+        </div>
+      </div>
+    </section>
+
+		<section id="how" class="container" style="padding-bottom:20px; display:block;">
+			<h2>How to Buy</h2>
+			<div class="grid grid-3">
+				<div class="card card-body">
+					<h3>1) Connect</h3>
+					<ul class="muted" style="display:grid; row-gap:12px;">
+						<li>Click <strong>Connect Wallet</strong> and choose <strong>Phantom</strong>.</li>
+						<li>If already connected, the button shows <strong>Disconnect</strong>—click again to disconnect.</li>
+						<li>Permissions are read-only until you approve a transaction.</li>
+					</ul>
+				</div>
+				<div class="card card-body">
+					<h3>2) Buy</h3>
+					<ul class="muted" style="display:grid; row-gap:12px;">
+						<li>Open a prompt and press <strong>Buy</strong>.</li>
+						<li>Review the price (in <strong>SOL</strong>) and confirm in Phantom. Network fees are shown before you approve.</li>
+						<li>If you cancel, nothing is charged.</li>
+					</ul>
+				</div>
+				<div class="card card-body">
+					<h3>3) Unlock</h3>
+					<ul class="muted" style="display:grid; row-gap:12px;">
+						<li>After final on-chain confirmation (a few seconds), the prompt <strong>decrypts and appears</strong>.</li>
+						<li>It’s saved under <strong>My Purchases</strong> at <code>/purchases</code> for future access.</li>
+						<li>If it doesn’t appear instantly, refresh or reconnect your wallet—the purchase is tied to your address.</li>
+					</ul>
+				</div>
+			</div>
+			<section id="roadmap" class="container" style="padding-bottom:40px; display:block;">
+				<h2 style="text-align: center; margin-bottom: 32px; font-size: 32px; background: linear-gradient(90deg, var(--g1), var(--g2), var(--g3)); -webkit-background-clip: text; background-clip: text; color: transparent;">ROADMAP</h2>
+
+				<div class="roadmap-timeline">
+					<!-- Aug-Sep Phase -->
+					<div class="roadmap-phase">
+						<div class="phase-header">
+							<span class="phase-badge">Aug–Sep 2025</span>
+							<h3>Hardening & Mainnet</h3>
+						</div>
+						<div class="phase-content">
+							<ul>
+								<li>Home trimmed to <strong>Hero + How to Buy</strong>; routes live for <strong>/explore</strong>, <strong>/creators</strong>, <strong>/purchases</strong></li>
+								<li>Clean purchase flow: price in <strong>SOL</strong> → confirm in <strong>Phantom</strong> → instant <strong>decrypt & reveal</strong> → saved in <strong>My Purchases</strong></li>
+								<li>Reliability & safety: secure storage/encryption, clear error pages, basic analytics and monitoring</li>
+							</ul>
+							<div class="targets">
+								<strong>Targets:</strong> checkout under <strong>2 minutes</strong>, successful unlock <strong>≥99%</strong>, zero build/console errors
+							</div>
+						</div>
+					</div>
+
+					<!-- Oct-Dec Phase -->
+					<div class="roadmap-phase">
+						<div class="phase-header">
+							<span class="phase-badge">Oct–Dec 2025</span>
+							<h3>Public Beta & Monetization</h3>
+						</div>
+						<div class="phase-content">
+							<ul>
+								<li><strong>Creators:</strong> onboarding, pricing, draft/publish, version notes</li>
+								<li><strong>Quality:</strong> ratings & reviews</li>
+								<li><strong>My Purchases:</strong> search, filter, re-reveal, quick copy/tips</li>
+								<li><strong>Economics:</strong> marketplace fee (e.g., 10%), creator payouts</li>
+								<li><strong>Launch:</strong> 20 seed creators, weekly "Top Prompts," X/Discord presence</li>
+							</ul>
+							<div class="targets">
+								<strong>Targets:</strong> <strong>100+</strong> prompts, <strong>50+</strong> paid purchases, refunds <strong><3%</strong>, global load <strong><200ms</strong>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2026 Q1 Phase -->
+					<div class="roadmap-phase">
+						<div class="phase-header">
+							<span class="phase-badge">2026 Q1</span>
+							<h3>Growth Foundations</h3>
+						</div>
+						<div class="phase-content">
+							<ul>
+								<li>Collections & bundles, coupons, featured placements</li>
+								<li>Creator analytics v1 (views → conversion → sales → payouts)</li>
+								<li>Better discovery: search, tags; simple report flow</li>
+							</ul>
+							<div class="targets">
+								<strong>Targets:</strong> <strong>500 WAU</strong>, <strong>200</strong> monthly purchases, creator NPS <strong>≥40</strong>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2026 Q2 Phase -->
+					<div class="roadmap-phase">
+						<div class="phase-header">
+							<h3>Teams & API</h3>
+							<span class="phase-badge">2026 Q2</span>
+						</div>
+						<div class="phase-content">
+							<ul>
+								<li>Team seats (share purchases across wallets/emails)</li>
+								<li>API & webhooks (purchased-prompt access, creator sales events)</li>
+								<li>Affiliates/referrals with tracked payouts</li>
+							</ul>
+							<div class="targets">
+								<strong>Targets:</strong> <strong>1K WAU</strong>, <strong>400</strong> monthly purchases, <strong>20</strong> org teams, <strong>10+</strong> API users
+							</div>
+						</div>
+					</div>
+
+					<!-- 2026 Q3 Phase -->
+					<div class="roadmap-phase">
+						<div class="phase-header">
+							<span class="phase-badge">2026 Q3</span>
+							<h3>Trust, Curation, Performance</h3>
+						</div>
+						<div class="phase-content">
+							<ul>
+								<li>Moderation 2.0 (flags/filters), creator verification badges</li>
+								<li>Recommendations (collaborative + content tags)</li>
+								<li>Start localization (EN +1)</li>
+							</ul>
+							<div class="targets">
+								<strong>Targets:</strong> repeat purchase rate <strong>≥30%</strong>, moderation SLA <strong><24h</strong>
+							</div>
+						</div>
+					</div>
+
+					<!-- 2026 Q4 Phase -->
+					<div class="roadmap-phase">
+						<div class="phase-header">
+							<span class="phase-badge">2026 Q4</span>
+							<h3>Scale & Compliance</h3>
+						</div>
+						<div class="phase-content">
+							<ul>
+								<li>Tax/GST & invoices; creator earnings dashboard + exports</li>
+								<li>Multi-currency display (USD/EUR; pay in SOL)</li>
+								<li>Advanced bundles; optional subscriptions pilot</li>
+							</ul>
+							<div class="targets">
+								<strong>Targets:</strong> <strong>2K WAU</strong>, <strong>1K</strong> monthly purchases, refunds <strong><2%</strong>, uptime <strong>99.95%</strong>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+
+		<div class="toast" id="toast"></div>
+
+
+
+	  
+	<section id="market" class="container" style="padding:20px 0 8px; display:none;">
+ 	 <div class="kv" style="margin-bottom:8px">
+  	  <h2>Marketplace</h2>
+  	  <div id="addr" class="badge">Wallet: not connected</div>
+	  </div>
+  
+	  <section class="container filters" style="margin-top:12px;overflow:visible; display:none;">
+ 	   <div class="card card-body" style="overflow:visible">
+   	   <div class="grid" style="grid-template-columns:2fr 1fr 1fr;gap:12px;align-items:end;overflow:visible">
+      	  <label>Search<input id="q" class="input" placeholder="Search title or category"/></label>
+     	   <details id="cat" class="select">
+        	  <summary class="input trigger"><span>Category</span><span id="cat_val" class="value" data-value="">All</span></summary>
+        	  <div class="menu"></div>
+      	  </details>
+     	   <details id="sort" class="select">
+       	   <summary class="input trigger"><span>Sort</span><span id="sort_val" class="value" data-value="default">Default</span></summary>
+         	 <div class="menu"></div>
+       	 </details>
+     	 </div>
+   	 </div>
+ 	 </section>
+  
+ 	 <div id="skeleton" class="grid grid-3">
+  	  <div class="skel"></div><div class="skel"></div><div class="skel"></div>
+	  </div>
+ 	 <div id="grid" class="grid grid-3" style="margin-top:12px"></div>
+	</section>
+
+    <section id="creators" class="container" style="padding-bottom:20px; display:none;">
+      <h2>Creators (coming soon)</h2>
+      <div class="card card-body">
+        <p class="muted" style="margin-top:0">
+          PromptFi will let creators list prompts, set SOL pricing, and get paid non‑custodially. Listings will be stored on IPFS with on‑chain receipts. Join the waitlist and be first to sell.
+        </p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="wlEmail" class="input" placeholder="Email or Telegram"/>
+          <button class="btn glow" onclick="localStorage.setItem('pf_waitlist', (localStorage.getItem('pf_waitlist')||'') + '\n' + document.getElementById('wlEmail').value); this.textContent='Joined ✓';">Join Waitlist</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="purchases" class="container" style="padding-bottom:24px; display:none;">
+      <h2>My Purchases</h2>
+      <div id="purchasesList" class="card card-body">No purchases yet.</div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+      <span>© 2025 PromptFi</span>
+      <div style="display:flex;gap:12px">
+        <a href="#explore">Marketplace</a>
+        <a href="#purchases">My Purchases</a>
+        <a href="#">How it works</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal -->
+<div id="modal" class="modal">
+  <div class="box">
+    <div class="kv">
+      <h3 id="mTitle" style="margin:0">Prompt</h3>
+      <button class="btn" onclick="closeModal()">✕</button>
+    </div>
+    <p id="mMeta" class="muted" style="margin:6px 0 0"></p>
+
+    <div class="card" style="margin-top:12px">
+      <div class="card-body">
+        <label>Brief (what do you need?)<textarea id="uBrief" class="input" rows="3" placeholder="Describe what you need (topic, tone, goal)…"></textarea></label>
+        <div class="grid" style="grid-template-columns:3fr 1fr;gap:10px;margin-top:10px">
+          <input id="uContact" class="input" placeholder="Your contact (email or Telegram)"/>
+          <button id="buyNow" class="btn glow">Buy & Unlock</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:160px;border:1px solid var(--b);border-radius:12px;margin-top:12px;background:
+      radial-gradient(90px 90px at 20% 30%, rgba(168,85,247,.25), transparent 60%),
+      radial-gradient(90px 90px at 80% 40%, rgba(6,182,212,.25), transparent 60%);padding:12px;overflow:auto;">
+      <p id="mText" style="margin:0;"></p>
+    </div>
+
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <a id="txLink" target="_blank" class="btn hidden">View on Solscan</a>
+      <button id="copyBtn" class="btn hidden">Copy Prompt</button>
+    </div>
+  </div>
+</div>
+
+
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
