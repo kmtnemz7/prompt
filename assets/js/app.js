@@ -268,7 +268,7 @@ function dropdown(rootId, items){
   const menu = root.querySelector('.menu');
   if (!summary || !val || !menu) return;
 
-  // Build menu
+  // Build buttons (explicit type avoids form-submit quirks)
   menu.innerHTML = items.map(([k, label]) =>
     `<button type="button" data-k="${k}">${label}</button>`
   ).join('');
@@ -279,22 +279,23 @@ function dropdown(rootId, items){
     root.toggleAttribute('open');
   });
 
-  // Click inside menu (robust target resolution)
-  menu.addEventListener('click', (e) => {
+  // Use pointerdown to beat any focus/close behavior on <details>
+  menu.addEventListener('pointerdown', (e) => {
     const btn = e.target.closest('button[data-k]');
     if (!btn) return;
-    const k = btn.dataset.k;
+    e.preventDefault();
+    e.stopPropagation();
 
-    // Update value shown + dataset used by applyFilters()
+    const k = btn.dataset.k;
     val.dataset.value = (k === '__all') ? '' : k;
     val.textContent = items.find(x => x[0] === k)?.[1] || items[0][1];
 
     root.removeAttribute('open');
-    applyFilters();               // <-- ensure re-filter
+    applyFilters();
   });
 
-  // Close when clicking outside or pressing Esc
-  document.addEventListener('click', (e) => {
+  // Close on outside click / Esc
+  document.addEventListener('pointerdown', (e) => {
     if (!root.contains(e.target)) root.removeAttribute('open');
   });
   root.addEventListener('keydown', (e) => {
