@@ -239,24 +239,25 @@ function applyFilters(){
   const q = $('#q');
   const catVal = $('#cat_val');
   const sortVal = $('#sort_val');
-  
   if (!q || !catVal || !sortVal) return;
-  
+
   const query = q.value.toLowerCase().trim();
-  const cat = catVal.dataset.value || '';
-  const sort = sortVal.dataset.value || 'default';
-  
+  const cat = (catVal.dataset.value || '').toLowerCase();
+  const sort = (sortVal.dataset.value || 'default');
+
   let list = DATA.filter(p => {
-    const hay = (p.title+' '+p.cat).toLowerCase();
-    if (cat && p.cat!==cat) return false;
-    return !query || hay.includes(query);
+    const hay = (p.title + ' ' + p.cat).toLowerCase();
+    const catOk = !cat || p.cat.toLowerCase() === cat;
+    return catOk && (!query || hay.includes(query));
   });
-  
+
   if (sort === 'priceAsc') list.sort((a,b)=>a.price-b.price);
   if (sort === 'priceDesc') list.sort((a,b)=>b.price-a.price);
   if (sort === 'alpha') list.sort((a,b)=>a.title.localeCompare(b.title));
+
   renderGrid(list);
 }
+
 
 // ---- FIXED DROPDOWN FUNCTION ----
 function dropdown(rootId, items){
