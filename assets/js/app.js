@@ -262,69 +262,43 @@ function applyFilters(){
 function dropdown(rootId, items){
   const root = document.getElementById(rootId);
   if (!root) return;
-  
+
   const summary = root.querySelector('summary');
   const val = root.querySelector('.value');
   const menu = root.querySelector('.menu');
-  if (!val || !menu || !summary) return;
-  
-  menu.innerHTML = items.map(([key, text])=>`<button data-k="${key}">${text}</button>`).join('');
-  
+  if (!summary || !val || !menu) return;
+
+  // Build menu
+  menu.innerHTML = items.map(([k, label]) =>
+    `<button type="button" data-k="${k}">${label}</button>`
+  ).join('');
+
+  // Open/close
   summary.addEventListener('click', (e) => {
     e.preventDefault();
-    if (root.hasAttribute('open')) {
-      root.removeAttribute('open');
-    } else {
-      root.setAttribute('open', '');
-    }
+    root.toggleAttribute('open');
   });
-  
+
+  // Click inside menu (robust target resolution)
   menu.addEventListener('click', (e) => {
-    const k = e.target?.dataset?.k;
-    if (!k) return;
-    
-    val.dataset.value = k === '__all' ? '' : k;
+    const btn = e.target.closest('button[data-k]');
+    if (!btn) return;
+    const k = btn.dataset.k;
+
+    // Update value shown + dataset used by applyFilters()
+    val.dataset.value = (k === '__all') ? '' : k;
     val.textContent = items.find(x => x[0] === k)?.[1] || items[0][1];
-    
+
     root.removeAttribute('open');
-    
-    applyFilters();
+    applyFilters();               // <-- ensure re-filter
   });
-  
+
+  // Close when clicking outside or pressing Esc
   document.addEventListener('click', (e) => {
-    if (!root.contains(e.target)) {
-      root.removeAttribute('open');
-    }
+    if (!root.contains(e.target)) root.removeAttribute('open');
   });
-  
   root.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      root.removeAttribute('open');
-      summary.focus();
-    }
-  });
-  
-  menu.addEventListener('keydown', (e) => {
-    const buttons = Array.from(menu.querySelectorAll('button'));
-    const currentIndex = buttons.indexOf(e.target);
-    
-    switch(e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        const nextIndex = currentIndex < buttons.length - 1 ? currentIndex + 1 : 0;
-        buttons[nextIndex].focus();
-        break;
-      case 'ArrowUp':
-        e.preventDefault();
-        const prevIndex = currentIndex > 0 ? currentIndex - 1 : buttons.length - 1;
-        buttons[prevIndex].focus();
-        break;
-      case 'Enter':
-      case ' ':
-        e.preventDefault();
-        e.target.click();
-        break;
-    }
+    if (e.key === 'Escape') root.removeAttribute('open');
   });
 }
 
