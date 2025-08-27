@@ -269,23 +269,22 @@ function dropdown(rootId, items){
   const menu = root.querySelector('.menu');
   if (!summary || !val || !menu) return;
 
-  // Build buttons (explicit type avoids form-submit quirks)
-  menu.innerHTML = items.map(([k, label]) =>
-    `<button type="button" data-k="${k}">${label}</button>`
-  ).join('');
+  // build buttons
+  menu.innerHTML = items
+    .map(([k, label]) => `<button type="button" data-k="${k}">${label}</button>`)
+    .join('');
 
-  // Open/close
-  summary.addEventListener('click', (e) => {
+  // open/close
+  summary.addEventListener('click', e => {
     e.preventDefault();
     root.toggleAttribute('open');
   });
 
-  // Use pointerdown to beat any focus/close behavior on <details>
-  menu.addEventListener('pointerdown', (e) => {
+  // select item (works even if you click the text)
+  menu.addEventListener('pointerdown', e => {
     const btn = e.target.closest('button[data-k]');
     if (!btn) return;
     e.preventDefault();
-    e.stopPropagation();
 
     const k = btn.dataset.k;
     val.dataset.value = (k === '__all') ? '' : k;
@@ -295,14 +294,15 @@ function dropdown(rootId, items){
     applyFilters();
   });
 
-  // Close on outside click / Esc
-  document.addEventListener('pointerdown', (e) => {
+  // close on outside/Esc
+  document.addEventListener('pointerdown', e => {
     if (!root.contains(e.target)) root.removeAttribute('open');
   });
-  root.addEventListener('keydown', (e) => {
+  root.addEventListener('keydown', e => {
     if (e.key === 'Escape') root.removeAttribute('open');
   });
 }
+
 
 // ---- Modal Functions ----
 function openModal(id, unlocked=false, sig=null){
