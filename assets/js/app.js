@@ -597,21 +597,27 @@ window.addEventListener('load', async () => {
 });
 
 // ---- Page Loader ----
+// ---- Page Loader ----
 (function () {
   const loader = document.getElementById('pageLoader');
-  if (!loader) return;
+  if (!loader) {
+    console.error('pageLoader element not found');
+    return;
+  }
 
-  function hideLoader(){ loader.classList.add('is-hidden'); }
-  function showLoader(ms=800){
+  function hideLoader() {
+    console.log('Hiding loader');
+    loader.classList.add('is-hidden');
+  }
+
+  function showLoader(ms = 800) {
+    console.log('Showing loader');
     loader.classList.remove('is-hidden');
     return new Promise(res => setTimeout(() => { hideLoader(); res(); }, ms));
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(hideLoader, 800));
-  } else {
-    setTimeout(hideLoader, 800);
-  }
+  console.log('Loader script running, readyState:', document.readyState);
+  setTimeout(hideLoader, 800); // Always hide after 800ms, regardless of readyState
 
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a');
@@ -627,7 +633,6 @@ window.addEventListener('load', async () => {
         const el = document.querySelector(hash);
         if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' });
       });
-      return;
     }
 
     if (href.startsWith('/')) {
