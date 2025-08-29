@@ -308,6 +308,29 @@ function dropdown(rootId, items) {
       root.removeAttribute('open');
     }
   });
+
+  menu.addEventListener('keydown', (e) => {
+    const buttons = Array.from(menu.querySelectorAll('button'));
+    const currentIndex = buttons.indexOf(e.target);
+    
+    switch(e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        const nextIndex = currentIndex < buttons.length - 1 ? currentIndex + 1 : 0;
+        buttons[nextIndex].focus();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        const prevIndex = currentIndex > 0 ? currentIndex - 1 : buttons.length - 1;
+        buttons[prevIndex].focus();
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        e.target.click();
+        break;
+    }
+  });
 }
   
   menu.addEventListener('keydown', (e) => {
