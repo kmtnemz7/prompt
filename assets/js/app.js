@@ -259,50 +259,56 @@ function applyFilters(){
 }
 
 // ---- FIXED DROPDOWN FUNCTION ----
-function dropdown(rootId, items){
+function dropdown(rootId, items) {
   const root = document.getElementById(rootId);
   if (!root) return;
-  
+
   const summary = root.querySelector('summary');
   const val = root.querySelector('.value');
   const menu = root.querySelector('.menu');
-  if (!val || !menu || !summary) return;
-  
-  menu.innerHTML = items.map(([key, text])=>`<button data-k="${key}">${text}</button>`).join('');
-  
-  summary.addEventListener('click', (e) => {
+  if (!summary || !val || !menu) return;
+
+  // Build buttons
+  menu.innerHTML = items
+    .map(([k, label]) => `<button type="button" data-k="${k}">${label}</button>`)
+    .join('');
+
+  // Open/close
+  summary.addEventListener('click', e => {
     e.preventDefault();
-    if (root.hasAttribute('open')) {
-      root.removeAttribute('open');
-    } else {
-      root.setAttribute('open', '');
-    }
+    root.toggleAttribute('open');
   });
-  
-  menu.addEventListener('click', (e) => {
-    const k = e.target?.dataset?.k;
-    if (!k) return;
-    
-    val.dataset.value = k === '__all' ? '' : k;
+
+  // Select item
+  menu.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-k]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation(); // Prevent event from bubbling to document
+
+    const k = btn.dataset.k;
+    val.dataset.value = (k === '__all') ? '' : k;
     val.textContent = items.find(x => x[0] === k)?.[1] || items[0][1];
-    
+
     root.removeAttribute('open');
-    
     applyFilters();
   });
-  
-  document.addEventListener('click', (e) => {
-    if (!root.contains(e.target)) {
+
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!root.contains(e.target) && root.hasAttribute('open')) {
       root.removeAttribute('open');
     }
   });
-  
-  root.addEventListener('keydown', (e) => {
+
+  // Close on Escape key
+  root.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
+      e.preventDefault();
       root.removeAttribute('open');
-      summary.focus();
     }
   });
+}
   
   menu.addEventListener('keydown', (e) => {
     const buttons = Array.from(menu.querySelectorAll('button'));
