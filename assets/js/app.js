@@ -276,25 +276,34 @@ function dropdown(rootId, items) {
   // Open/close
   summary.addEventListener('click', e => {
     e.preventDefault();
+    e.stopPropagation(); // Prevent bubbling to document
     root.toggleAttribute('open');
   });
 
-  // Select item
+  // Select item - KEY FIX: Stop propagation and prevent default
   menu.addEventListener('click', e => {
     const btn = e.target.closest('button[data-k]');
     if (!btn) return;
+    
     e.preventDefault();
-    e.stopPropagation(); // Prevent event from bubbling to document
+    e.stopPropagation(); // CRITICAL: Prevent event from bubbling to document
 
     const k = btn.dataset.k;
     val.dataset.value = (k === '__all') ? '' : k;
     val.textContent = items.find(x => x[0] === k)?.[1] || items[0][1];
 
-    root.removeAttribute('open');
-    applyFilters();
+    // Close dropdown AFTER updating value
+    setTimeout(() => {
+      root.removeAttribute('open');
+    }, 10);
+    
+    // Apply filters after a brief delay to ensure dropdown closes first
+    setTimeout(() => {
+      applyFilters();
+    }, 20);
   });
 
-  // Close on outside click
+  // Close on outside click - but ignore clicks inside the dropdown
   document.addEventListener('click', e => {
     if (!root.contains(e.target) && root.hasAttribute('open')) {
       root.removeAttribute('open');
@@ -309,6 +318,7 @@ function dropdown(rootId, items) {
     }
   });
 
+  // Keyboard navigation
   menu.addEventListener('keydown', (e) => {
     const buttons = Array.from(menu.querySelectorAll('button'));
     const currentIndex = buttons.indexOf(e.target);
@@ -327,6 +337,7 @@ function dropdown(rootId, items) {
       case 'Enter':
       case ' ':
         e.preventDefault();
+        e.stopPropagation(); // Prevent bubbling
         e.target.click();
         break;
     }
