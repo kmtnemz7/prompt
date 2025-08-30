@@ -596,8 +596,7 @@ window.addEventListener('load', async () => {
   renderPurchases();
 });
 
-// ---- Page Loader ----
-// ---- Page Loader ----
+// ---- Page Loader (FIXED VERSION) ----
 (function () {
   const loader = document.getElementById('pageLoader');
   if (!loader) {
@@ -605,20 +604,44 @@ window.addEventListener('load', async () => {
     return;
   }
 
+  let isHidden = false;
+
   function hideLoader() {
+    if (isHidden) return;
     console.log('Hiding loader');
+    isHidden = true;
     loader.classList.add('is-hidden');
   }
 
   function showLoader(ms = 800) {
     console.log('Showing loader');
+    isHidden = false;
     loader.classList.remove('is-hidden');
     return new Promise(res => setTimeout(() => { hideLoader(); res(); }, ms));
   }
 
-  console.log('Loader script running, readyState:', document.readyState);
-  setTimeout(hideLoader, 800); // Always hide after 800ms, regardless of readyState
+  // Fallback timer - always hide after 3 seconds maximum
+  const fallbackTimer = setTimeout(() => {
+    console.log('Fallback timer triggered - hiding loader');
+    hideLoader();
+  }, 3000);
 
+  // Hide loader when page is fully loaded and initialized
+  function onPageReady() {
+    console.log('Page ready - hiding loader');
+    clearTimeout(fallbackTimer);
+    setTimeout(hideLoader, 100); // Small delay to ensure smooth transition
+  }
+
+  // Check if page is already loaded
+  if (document.readyState === 'complete') {
+    onPageReady();
+  } else {
+    // Wait for page load
+    window.addEventListener('load', onPageReady);
+  }
+
+  // Navigation loader logic (unchanged)
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a');
     if (!a) return;
