@@ -608,51 +608,24 @@ window.addEventListener('load', async () => {
 });
 
 // ---- Page Loader (FIXED VERSION) ----
+// ---- Page Loader ----
 (function () {
   const loader = document.getElementById('pageLoader');
-  if (!loader) {
-    console.error('pageLoader element not found');
-    return;
-  }
-
-  let isHidden = false;
+  if (!loader) return;
 
   function hideLoader() {
-    if (isHidden) return;
-    console.log('Hiding loader');
-    isHidden = true;
     loader.classList.add('is-hidden');
   }
 
   function showLoader(ms = 800) {
-    console.log('Showing loader');
-    isHidden = false;
     loader.classList.remove('is-hidden');
     return new Promise(res => setTimeout(() => { hideLoader(); res(); }, ms));
   }
 
-  // Fallback timer - always hide after 3 seconds maximum
-  const fallbackTimer = setTimeout(() => {
-    console.log('Fallback timer triggered - hiding loader');
-    hideLoader();
-  }, 3000);
+  // Hide loader after 1 second
+  setTimeout(hideLoader, 1000);
 
-  // Hide loader when page is fully loaded and initialized
-  function onPageReady() {
-    console.log('Page ready - hiding loader');
-    clearTimeout(fallbackTimer);
-    setTimeout(hideLoader, 100); // Small delay to ensure smooth transition
-  }
-
-  // Check if page is already loaded
-  if (document.readyState === 'complete') {
-    onPageReady();
-  } else {
-    // Wait for page load
-    window.addEventListener('load', onPageReady);
-  }
-
-  // Navigation loader logic (unchanged)
+  // Navigation loader logic
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a');
     if (!a) return;
